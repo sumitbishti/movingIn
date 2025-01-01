@@ -59,6 +59,7 @@ const SearchBar = () => {
     <div className="relative border-2 border-accent-foreground w-[600px] h-[60px] rounded-full flex items-center bg-red-100">
       <Search className="cursor-pointer h-[25px] w-[25px] m-4 flex-shrink-0" />
 
+      {/* shows recent searches */}
       {/* <RecentSearchResults /> */}
 
       <form action="" className="w-full" onSubmit={onSearchSubmit}>
