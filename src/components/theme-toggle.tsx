@@ -12,6 +12,7 @@ export function ThemeToggle() {
       variant="ghost"
       size="icon"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      className="rounded-full"
     >
       <Sun
         className={`h-[1.2rem] w-[1.2rem] transition-all ${
