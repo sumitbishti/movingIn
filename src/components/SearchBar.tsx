@@ -12,9 +12,13 @@ const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
-  const searchTimeout = useRef<NodeJS.Timeout | null>(null);
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [recentSearchResultsBox, setrecentSearchResultsBox] = useState(false);
 
   const fetchSearchResults = async () => {
+    // fetch search result based on the search term
+    // set up a temp server that returns the required data
+    console.log("Fetch Api called");
     const response = await fetch("https://jsonplaceholder.typicode.com/posts");
     const data = await response.json();
     return data;
@@ -33,10 +37,11 @@ const SearchBar = () => {
     console.log(searchValue);
     setSearchTerm(searchValue);
 
-    if (searchTimeout.current) {
-      clearTimeout(searchTimeout.current);
+    // debouncing ?
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
     }
-    searchTimeout.current = setTimeout(async () => {
+    searchTimeoutRef.current = setTimeout(async () => {
       const data = await fetchSearchResults();
       setSearchResults(data);
       console.log("fetched data");
@@ -55,18 +60,30 @@ const SearchBar = () => {
     inputRef.current?.blur();
   };
 
+  const onRecentSearchItemClick = (item: any) => {
+    console.log(item);
+    setSearchTerm(item);
+    fetchSearchResults();
+  };
+
   return (
     <div className="relative border-2 border-accent-foreground w-[600px] h-[60px] rounded-full flex items-center bg-red-100">
       <Search className="cursor-pointer h-[25px] w-[25px] m-4 flex-shrink-0" />
 
       {/* shows recent searches */}
-      {/* <RecentSearchResults /> */}
+      {recentSearchResultsBox && (
+        <RecentSearchResults
+          onRecentSearchItemClick={onRecentSearchItemClick}
+        />
+      ) }
 
       <form action="" className="w-full" onSubmit={onSearchSubmit}>
         <input
           type="text"
           ref={inputRef}
           value={searchTerm}
+          onFocus={() => setrecentSearchResultsBox(true)}
+          onBlur={() => setrecentSearchResultsBox(false)}
           onChange={onSearchTermChange}
           placeholder="Search here..."
           className="w-full h-full rounded-full p-3 outline-none"

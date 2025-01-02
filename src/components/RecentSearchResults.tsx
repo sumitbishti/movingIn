@@ -1,17 +1,25 @@
-const RecentSearchResults = () => {
-  return (
-    <div className="flex flex-col absolute bg-orange-100 h-[200px] w-[600px] top-full right-0 rounded-xl mt-1 p-4">
-      {/* <div className="relative flex">
-        <p className="mx-auto px-2 italic text-xs bg-orange-100 z-10">
-          Recent Searches
-        </p>
-        <div className="border rounded-full absolute w-full top-1/2 border-black"></div>
-      </div> */}
+import { History } from "lucide-react";
+import { Button } from "./ui/button";
 
-      <div>
-        <h1>1</h1>
-        <h1>2</h1>
-      </div>
+const recentResults = ["sumit bisht", "shoes", "clothes for me"];
+
+const RecentSearchResults = ({ onRecentSearchItemClick }: any) => {
+  return (
+    <div className="flex flex-col w-full absolute bg-orange-100 top-full right-0 rounded-xl mt-1 py-4">
+      {recentResults.map((item, index) => {
+        return (
+          <div
+            key={index}
+            className="flex gap-2 items-center hover:bg-accent w-full"
+            onClick={() => onRecentSearchItemClick(item)}
+          >
+            <Button variant="ghost" size="icon">
+              <History />
+            </Button>
+            {item}
+          </div>
+        );
+      })}
     </div>
   );
 };
