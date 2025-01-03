@@ -1,14 +1,13 @@
 import { History } from "lucide-react";
 import { Button } from "./ui/button";
 
-const recentResults = ["sumit bisht", "shoes", "clothes for me"];
-
-// test commit
-
-const RecentSearchResults = ({ onRecentSearchItemClick }: any) => {
+const RecentSearchResults = ({
+  onRecentSearchItemClick,
+  recentSearches,
+}: any) => {
   return (
-    <div className="flex flex-col w-full absolute bg-orange-100 top-full right-0 rounded-xl mt-1 py-4">
-      {recentResults.map((item, index) => {
+    <div className="flex flex-col w-full absolute bg-accent top-full right-0 rounded-xl mt-1 py-4">
+      {recentSearches.map((item: any, index: any) => {
         return (
           <div
             key={index}

@@ -15,6 +15,10 @@ const SearchBar = () => {
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [recentSearchResultsBox, setrecentSearchResultsBox] = useState(false);
 
+  const recentSearches = JSON.parse(
+    localStorage.getItem("recentSearches") || "[]"
+  );
+
   const fetchSearchResults = async () => {
     // fetch search result based on the search term
     // set up a temp server that returns the required data
@@ -25,27 +29,30 @@ const SearchBar = () => {
   };
 
   const saveSearchTermOnDevice = (searchTerm: any) => {
-    const searchResults = JSON.parse(
-      localStorage.getItem("searchResults") as string
-    );
+    const searchResults =
+      JSON.parse(localStorage.getItem("recentSearches") as string) || [];
+
+    console.log(searchResults);
     const newSearchResults = [...searchResults, searchTerm];
-    localStorage.setItem("searchResults", JSON.stringify(newSearchResults));
+    localStorage.setItem("recentSearches", JSON.stringify(newSearchResults));
+  };
+
+  const debounce = (callback: any, delay: any) => {
+    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+
+    searchTimeoutRef.current = setTimeout(async () => {
+      await callback();
+    }, delay);
   };
 
   const onSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = e.target.value;
-    console.log(searchValue);
     setSearchTerm(searchValue);
 
-    // debouncing ?
-    if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current);
-    }
-    searchTimeoutRef.current = setTimeout(async () => {
-      const data = await fetchSearchResults();
-      setSearchResults(data);
-      console.log("fetched data");
-    }, 300);
+    if (searchValue === "") setrecentSearchResultsBox(true);
+    else setrecentSearchResultsBox(false);
+
+    debounce(fetchSearchResults, 500);
   };
 
   const onClearSearchTerm = () => {
@@ -55,6 +62,8 @@ const SearchBar = () => {
 
   const onSearchSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (searchTerm.trim() === "") return;
     saveSearchTermOnDevice(searchTerm);
     console.log("searched..");
     inputRef.current?.blur();
@@ -67,22 +76,23 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="relative border-2 border-accent-foreground w-[600px] h-[60px] rounded-full flex items-center bg-red-100">
+    <div className="relative border-2 border-accent-foreground w-[600px] h-[60px] rounded-full flex items-center">
       <Search className="cursor-pointer h-[25px] w-[25px] m-4 flex-shrink-0" />
 
       {/* shows recent searches */}
-      {recentSearchResultsBox && (
+      {recentSearchResultsBox && recentSearches.length > 0 && (
         <RecentSearchResults
+          recentSearches={recentSearches}
           onRecentSearchItemClick={onRecentSearchItemClick}
         />
-      ) }
+      )}
 
       <form action="" className="w-full" onSubmit={onSearchSubmit}>
         <input
           type="text"
           ref={inputRef}
           value={searchTerm}
-          onFocus={() => setrecentSearchResultsBox(true)}
+          onFocus={() => searchTerm === "" && setrecentSearchResultsBox(true)}
           onBlur={() => setrecentSearchResultsBox(false)}
           onChange={onSearchTermChange}
           placeholder="Search here..."
