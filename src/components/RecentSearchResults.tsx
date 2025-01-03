@@ -3,6 +3,8 @@ import { Button } from "./ui/button";
 
 const recentResults = ["sumit bisht", "shoes", "clothes for me"];
 
+// test commit
+
 const RecentSearchResults = ({ onRecentSearchItemClick }: any) => {
   return (
     <div className="flex flex-col w-full absolute bg-orange-100 top-full right-0 rounded-xl mt-1 py-4">
