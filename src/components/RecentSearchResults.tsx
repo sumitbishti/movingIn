@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 
 const recentResults = ["sumit bisht", "shoes", "clothes for me"];
 
-// test commit
+// test commit after merging the branch
 
 const RecentSearchResults = ({ onRecentSearchItemClick }: any) => {
   return (
