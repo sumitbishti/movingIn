@@ -1,7 +1,7 @@
 "use client";
 
 import { Search, X, Filter } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import RecentSearchResults from "./RecentSearchResults";
 
 type SearchResult = {
@@ -13,7 +13,7 @@ const SearchBar = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [recentSearchResultsBox, setrecentSearchResultsBox] = useState(false);
+  const [recentSearchResultsBox, setRecentSearchResultsBox] = useState(false);
 
   const recentSearches = JSON.parse(
     localStorage.getItem("recentSearches") || "[]"
@@ -49,8 +49,8 @@ const SearchBar = () => {
     const searchValue = e.target.value;
     setSearchTerm(searchValue);
 
-    if (searchValue === "") setrecentSearchResultsBox(true);
-    else setrecentSearchResultsBox(false);
+    if (searchValue === "") setRecentSearchResultsBox(true);
+    else setRecentSearchResultsBox(false);
 
     debounce(fetchSearchResults, 500);
   };
@@ -75,6 +75,19 @@ const SearchBar = () => {
     fetchSearchResults();
   };
 
+  useEffect(() => {
+    const handleKeyDown = (event: any) => {
+      if (event.key === "Escape") {
+        setRecentSearchResultsBox(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
     <div className="relative border-2 border-accent-foreground w-[600px] h-[60px] rounded-full flex items-center">
       <Search className="cursor-pointer h-[25px] w-[25px] m-4 flex-shrink-0" />
@@ -92,8 +105,8 @@ const SearchBar = () => {
           type="text"
           ref={inputRef}
           value={searchTerm}
-          onFocus={() => searchTerm === "" && setrecentSearchResultsBox(true)}
-          onBlur={() => setrecentSearchResultsBox(false)}
+          onFocus={() => searchTerm === "" && setRecentSearchResultsBox(true)}
+          onBlur={() => setRecentSearchResultsBox(false)}
           onChange={onSearchTermChange}
           placeholder="Search here..."
           className="w-full h-full rounded-full p-3 outline-none"
