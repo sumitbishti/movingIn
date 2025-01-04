@@ -11,10 +11,10 @@ const RecentSearchResults = ({
         return (
           <div
             key={index}
-            className="flex gap-2 items-center hover:bg-accent w-full"
+            className="flex gap-1 items-center hover:bg-white w-full px-2"
             onMouseDown={() => onRecentSearchItemClick(item)}
           >
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="hover:bg-white transition-none">
               <History />
             </Button>
             {item}
