@@ -1,16 +1,43 @@
-import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "./ui/card";
+import { data } from "@/data/hero_data";
 
 export default function Hero() {
   return (
-    <section className="bg-primary text-primary-foreground py-20 px-6">
-      <div className="container mx-auto text-center">
-        <h1 className="text-5xl font-bold mb-4">Welcome to Our Website</h1>
-        <p className="text-xl mb-8">
-          Discover amazing features and services tailored just for you.
-        </p>
-        <Button variant="secondary" size="lg">
-          Get Started
-        </Button>
+    <section className="bg-background text-foreground py-20 px-6 border">
+      <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+        {data.map((item, index) => (
+          <Card key={index} className="border-0 flex flex-col gap-3 mb-4">
+            <CardHeader>
+              <img
+                src={item.image}
+                alt={item.title}
+                className="w-full h-60 object-cover rounded-xl"
+              />
+            </CardHeader>
+            <CardContent>
+              <CardTitle>{item.title}</CardTitle>
+              <CardDescription className="line-clamp-2">
+                {item.desp}
+              </CardDescription>
+            </CardContent>
+            <CardFooter className="mt-auto flex justify-between">
+              <div className="flex flex-col">
+                <span className="text-sm font-semibold">{item.location}</span>
+                <span className="text-sm text-muted-foreground">
+                  {item.date}
+                </span>
+              </div>
+              <div className="text-sm font-bold mr-2">₹{item.price}</div>
+            </CardFooter>
+          </Card>
+        ))}
       </div>
     </section>
   );

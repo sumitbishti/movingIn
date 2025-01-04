@@ -21,6 +21,7 @@ const SearchBar = () => {
   const fetchSearchResults = useCallback(async () => {
     // fetch search result based on the search term
     // set up a temp server that returns the required data
+    // apply caching
 
     try {
       console.log(`Fetch Api called for : ${searchTerm}`);
