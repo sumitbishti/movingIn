@@ -8,6 +8,14 @@ import {
 } from "./ui/card";
 import { data } from "@/data/hero_data";
 
+// optimize image loading
+// add list virtualization/windowing
+// add loading animation/pagination
+// add infinite scrolling
+// add skeleton rendering
+// fetch the card data from real api
+// add caching if possible
+
 export default function Hero() {
   return (
     <section className="bg-background text-foreground py-20 px-6 border">
