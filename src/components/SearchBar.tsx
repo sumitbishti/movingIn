@@ -21,11 +21,20 @@ const SearchBar = () => {
   const fetchSearchResults = useCallback(async () => {
     // fetch search result based on the search term
     // set up a temp server that returns the required data
-    console.log("Fetch Api called");
-    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
-    const data = await response.json();
-    return data;
-  }, []);
+
+    try {
+      console.log(`Fetch Api called for : ${searchTerm}`);
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/posts"
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.log(error);
+      console.log(`error in fetching data for: ${searchTerm}`);
+      return [];
+    }
+  }, [searchTerm]);
 
   const saveSearchTermOnBrowser = (searchTerm: string) => {
     if (!searchTerm.trim()) return;
