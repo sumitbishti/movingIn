@@ -7,6 +7,7 @@ import {
   CardFooter,
 } from "./ui/card";
 import { data } from "@/data/hero_data";
+import { Heart, ChevronRight, ChevronLeft } from "lucide-react";
 
 // optimize image loading
 // add list virtualization/windowing
@@ -21,13 +22,18 @@ export default function Hero() {
     <section className="bg-background text-foreground py-20 px-6 border">
       <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
         {data.map((item, index) => (
-          <Card key={index} className="border-0 flex flex-col gap-3 mb-4">
+          <Card key={index} className="relative border-0 flex flex-col gap-3 mb-4 group">
             <CardHeader>
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-60 object-cover rounded-xl"
-              />
+              {/* <div className="relative"> */}
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-60 object-cover rounded-xl"
+                />
+                <Heart className="absolute text-white top-2 right-3 transform hover:scale-110" />
+                <ChevronLeft className="absolute opacity-0 group-hover:opacity-100 transition-opacity p-1 left-3 top-1/3 bg-white rounded-full transform hover:scale-110" />
+                <ChevronRight className="absolute opacity-0 group-hover:opacity-100 transition-opacity p-1 right-3 top-1/3 bg-white rounded-full transform hover:scale-110" />
+              {/* </div> */}
             </CardHeader>
             <CardContent>
               <CardTitle>{item.title}</CardTitle>
