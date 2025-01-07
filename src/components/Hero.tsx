@@ -111,7 +111,7 @@ const ImageCard = (props: ImageCardProps) => {
 
     updateDotsContainerPosition();
     updateDotsSize();
-  }, [currentIndex]);
+  }, [currentIndex, images]);
 
   return (
     <Card className="relative border-0 flex flex-col gap-3 mb-4 group">

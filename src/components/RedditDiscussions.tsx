@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -29,7 +29,7 @@ const RedditDiscussions: React.FC<{ discussions: Discussion[] }> = ({
     null
   );
 
-  const formatDate = (isoDate: any) => {
+  const formatDate = (isoDate: string) => {
     return new Date(isoDate).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
@@ -52,7 +52,7 @@ const RedditDiscussions: React.FC<{ discussions: Discussion[] }> = ({
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-4">
-      {discussions.map((discussion: any, index) => (
+      {discussions.map((discussion, index) => (
         <Card key={index} className="w-full">
           <CardHeader>
             <CardTitle className="flex justify-between items-start flex-col sm:flex-row gap-4">
@@ -80,7 +80,9 @@ const RedditDiscussions: React.FC<{ discussions: Discussion[] }> = ({
           </CardHeader>
           <CardContent>
             {discussion.selftext && (
-              <p className="mb-4 text-gray-700 whitespace-pre-line">{discussion.selftext}</p>
+              <p className="mb-4 text-gray-700 whitespace-pre-line">
+                {discussion.selftext}
+              </p>
             )}
 
             {discussion.responses && discussion.responses.length > 0 && (
@@ -100,7 +102,7 @@ const RedditDiscussions: React.FC<{ discussions: Discussion[] }> = ({
 
             {expandedDiscussion === index && discussion.responses && (
               <div className="mt-4 space-y-4">
-                {discussion.responses.map((response: any, rIndex: any) => (
+                {discussion.responses.map((response, rIndex) => (
                   <div key={rIndex} className="p-4 bg-gray-50 rounded-lg">
                     <div className="flex justify-between items-start mb-2 flex-col sm:flex-row gap-2">
                       <span className="font-medium">u/{response.author}</span>
@@ -112,7 +114,9 @@ const RedditDiscussions: React.FC<{ discussions: Discussion[] }> = ({
                         <span>{formatDate(response.created_utc)}</span>
                       </div>
                     </div>
-                    <p className="text-gray-700 whitespace-pre-line">{response.text}</p>
+                    <p className="text-gray-700 whitespace-pre-line">
+                      {response.text}
+                    </p>
                   </div>
                 ))}
               </div>
