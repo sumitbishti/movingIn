@@ -18,11 +18,10 @@ const SearchBar = () => {
     JSON.parse(localStorage.getItem("recentSearches") || "[]") || [];
   recentSearches = recentSearches.slice(0, Math.min(10, recentSearches.length));
 
+  // fetch search result based on the search term
+  // set up a temp server that returns the required data
+  // apply caching
   const fetchSearchResults = useCallback(async () => {
-    // fetch search result based on the search term
-    // set up a temp server that returns the required data
-    // apply caching
-
     try {
       console.log(`Fetch Api called for : ${searchTerm}`);
       const response = await fetch(
@@ -92,7 +91,7 @@ const SearchBar = () => {
   }, []);
 
   return (
-    <div className="relative border-2 border-accent-foreground w-[600px] h-[60px] rounded-full flex items-center">
+    <div className="relative border-0 border-accent w-[600px] h-[50px] rounded-full flex items-center bg-secondary">
       <Search className="cursor-pointer h-[25px] w-[25px] m-4 flex-shrink-0" />
 
       {/* shows recent searches */}
@@ -116,7 +115,7 @@ const SearchBar = () => {
           }
           onChange={handleSearchChange}
           placeholder="Search here..."
-          className="w-full h-full rounded-full p-3 outline-none"
+          className="w-full h-full rounded-full p-3 outline-none bg-secondary"
         />
       </form>
 

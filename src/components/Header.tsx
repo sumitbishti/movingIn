@@ -15,11 +15,11 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-background py-4 px-6">
+    <header className="bg-background p-4 fixed top-0 flex w-full z-50">
       <div className="container mx-auto flex justify-between items-center gap-4">
         {/* Logo */}
         <Link href="/" className="text-2xl font-bold text-primary">
-          mi
+          moveIn
         </Link>
 
         {/* Search */}

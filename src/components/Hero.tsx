@@ -22,7 +22,7 @@ import { Heart, ChevronRight, ChevronLeft } from "lucide-react";
 
 export default function Hero() {
   return (
-    <section className="bg-background text-foreground py-20 px-6 border">
+    <section className="bg-background text-foreground py-12 px-6 mt-20">
       <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
         {data.map((item, index) => (
           <ImageCard key={index} item={item} />
@@ -34,8 +34,13 @@ export default function Hero() {
 
 const ImageCard = ({ item }: any) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHeartClicked, setIsHeartClicked] = useState(false);
   const dotsRef = useRef<any>(null);
   const VISIBLE_DOTS_LENGTH = 5;
+
+  const handleHeartClicked = () => {
+    setIsHeartClicked(!isHeartClicked);
+  };
 
   const handleNextClick = () => {
     setCurrentIndex((prev) => (prev + 1) % item.images.length);
@@ -91,6 +96,7 @@ const ImageCard = ({ item }: any) => {
       }
     });
   };
+
   useEffect(() => {
     updateDotsContainerPosition();
     updateDotsSize();
@@ -113,16 +119,21 @@ const ImageCard = ({ item }: any) => {
           ))}
         </div>
 
-        <Heart className="absolute text-white top-2 right-3 transform hover:scale-110" />
+        <Heart
+          className={`absolute text-background top-2 right-3 transform hover:scale-110 ${
+            isHeartClicked && "text-red-500 fill-red-500"
+          }`}
+          onClick={handleHeartClicked}
+        />
         <ChevronLeft
           onClick={handlePrevClick}
-          className={`absolute opacity-0 group-hover:opacity-100 transition-opacity p-1 left-3 top-1/3 bg-white rounded-full transform hover:scale-110 ${
+          className={`absolute opacity-0 group-hover:opacity-100 transition-opacity p-1 left-3 top-1/3 bg-background rounded-full transform hover:scale-110 ${
             currentIndex <= 0 && "hidden"
           }`}
         />
         <ChevronRight
           onClick={handleNextClick}
-          className={`absolute opacity-0 group-hover:opacity-100 transition-opacity p-1 right-3 top-1/3 bg-white rounded-full transform hover:scale-110 ${
+          className={`absolute opacity-0 group-hover:opacity-100 transition-opacity p-1 right-3 top-1/3 bg-background rounded-full transform hover:scale-110 ${
             currentIndex === item.images.length - 1 && "hidden"
           }`}
         />
@@ -137,7 +148,7 @@ const ImageCard = ({ item }: any) => {
               return (
                 <div
                   key={index}
-                  className={`h-[8px] w-[8px] bg-white rounded-full transition ${
+                  className={`h-[8px] w-[8px] bg-background rounded-full transition ${
                     currentIndex === index ? "opacity-100" : "opacity-60"
                   }`}
                 />

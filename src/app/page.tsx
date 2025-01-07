@@ -9,7 +9,7 @@ export default function Home() {
       <Header />
       <main className="flex-grow">
         <Hero />
-        <Features />
+        {/* <Features /> */}
       </main>
       <Footer />
     </div>
