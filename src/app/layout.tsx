@@ -18,11 +18,19 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              const storedTheme = localStorage.getItem('theme');
-              const systemTheme = window.matchMedia('prefers-color-scheme: dark').matched ? 'dark' : 'light';
-              const theme = !storedTheme ? systemTheme : storedTheme;
-              document.documentElement.classList.add(theme)
-            `,
+            (function() {
+              try {
+                const storedTheme = localStorage.getItem('theme');
+                const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                const theme = storedTheme || systemTheme;
+                if (theme) {
+                  document.documentElement.classList.add(theme);
+                }
+              } catch (e) {
+                console.error('Failed to apply theme', e);
+              }
+            })();
+          `,
           }}
         />
       </head>
