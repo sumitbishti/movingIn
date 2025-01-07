@@ -6,10 +6,6 @@ import RecentSearchResults from "./RecentSearchResults";
 
 export type RecentSearchItem = string;
 
-type SearchResult = {
-  id: number;
-};
-
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   // const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
