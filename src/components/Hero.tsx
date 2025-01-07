@@ -107,15 +107,17 @@ const ImageCard = ({ item }: any) => {
     <Card className="relative border-0 flex flex-col gap-3 mb-4 group">
       <CardHeader className="overflow-hidden rounded-xl">
         <div
-          className="flex w-full transform transition-transform duration-500"
+          className="flex w-full transform transition-transform duration-500 h-60"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {item.images.map((src: any, index: number) => (
-            <img
-              key={index}
+            <Image
               src={src}
+              key={index}
+              width={500}
+              height={500}
               alt={item.title}
-              className="w-full h-60 select-none object-cover"
+              className="select-none object-cover"
             />
           ))}
         </div>
