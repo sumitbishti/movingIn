@@ -10,6 +10,7 @@ import {
   CardFooter,
 } from "./ui/card";
 import { data } from "@/data/hero_data";
+import Image from "next/image";
 import { Heart, ChevronRight, ChevronLeft } from "lucide-react";
 
 // optimize image loading
@@ -144,7 +145,7 @@ const ImageCard = ({ item }: any) => {
             className="bg-black-0 flex justify-center items-center gap-[4px] px-[2px] py-1 transition-transform duration-500"
             ref={dotsRef}
           >
-            {item.images.map((_: any, index: number) => {
+            {item.images.map((_: string, index: number) => {
               return (
                 <div
                   key={index}

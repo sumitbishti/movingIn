@@ -3,20 +3,26 @@
 import { History } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
+import { RecentSearchItem } from "./SearchBar";
+
+type RecentSearchResultsProps = {
+  onRecentSearchItemClick: (item: RecentSearchItem) => void;
+  recentSearches: [string];
+};
 
 const RecentSearchResults = ({
   onRecentSearchItemClick,
   recentSearches,
-}: any) => {
+}: RecentSearchResultsProps) => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   useEffect(() => {
-    const arrowKeyNavigation = (event: any) => {
+    const arrowKeyNavigation = (event: KeyboardEvent) => {
       if (event.key == "ArrowDown") {
         const newIndex = (selectedIndex + 1) % recentSearches.length;
         setSelectedIndex(newIndex);
       } else if (event.key == "ArrowUp") {
-        let newIndex =
+        const newIndex =
           selectedIndex <= 0 ? recentSearches.length - 1 : selectedIndex - 1;
         setSelectedIndex(newIndex);
       } else if (event.key == "Enter") {
@@ -31,7 +37,7 @@ const RecentSearchResults = ({
 
   return (
     <div className="flex flex-col w-full absolute bg-primary-foreground top-full right-0 rounded-xl mt-1 py-4">
-      {recentSearches.map((item: any, index: any) => {
+      {recentSearches.map((item: RecentSearchItem, index: number) => {
         return (
           <div
             key={index}

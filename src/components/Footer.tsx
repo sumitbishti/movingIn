@@ -5,8 +5,8 @@ export default function Footer() {
     <footer className="bg-background py-8 px-6 w-full flex justify-center items-center mb-4">
       <div className="flex flex-col-reverse md:flex-row text-sm flex-wrap justify-center items-center">
         <div className="mx-4">
-          <a href="/">LOGO</a>
-          <span>{" "}&copy; 2024 Mi.</span>
+          <Link href="/">LOGO</Link>
+          <span> &copy; 2024 Mi.</span>
         </div>
         <nav>
           <ul className="mb-2 md:mb-0 flex justify-center items-center space-x-4 flex-wrap">
@@ -27,7 +27,10 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="text-foreground hover:text-primary">
+              <Link
+                href="/contact"
+                className="text-foreground hover:text-primary"
+              >
                 Contact
               </Link>
             </li>
@@ -37,7 +40,10 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/cookies" className="text-foreground hover:text-primary">
+              <Link
+                href="/cookies"
+                className="text-foreground hover:text-primary"
+              >
                 Manage Cookies
               </Link>
             </li>

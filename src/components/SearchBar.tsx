@@ -4,13 +4,15 @@ import { Search, X, Filter } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import RecentSearchResults from "./RecentSearchResults";
 
+export type RecentSearchItem = string;
+
 type SearchResult = {
   id: number;
 };
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  // const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [showRecentSearches, setShowRecentSearches] = useState(false);
 
@@ -37,7 +39,7 @@ const SearchBar = () => {
   }, [searchTerm]);
 
   const saveSearchTermOnBrowser = (searchTerm: string) => {
-    if (!searchTerm.trim()) return;
+    if (!searchTerm?.trim()) return;
 
     const prevSearches = [...recentSearches];
     prevSearches.unshift(searchTerm);
@@ -49,7 +51,7 @@ const SearchBar = () => {
 
   // debouncing the fetch
   useEffect(() => {
-    let timer = setTimeout(() => {
+    const timer = setTimeout(() => {
       fetchSearchResults();
     }, 500);
 
@@ -66,19 +68,19 @@ const SearchBar = () => {
   const handleSearchSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (searchTerm.trim() === "") return;
+    if (searchTerm?.trim() === "") return;
     saveSearchTermOnBrowser(searchTerm);
     inputRef.current?.blur();
   };
 
-  const onRecentSearchItemClick = (item: any) => {
+  const onRecentSearchItemClick = (item: RecentSearchItem) => {
     console.log(item);
     setSearchTerm(item);
     fetchSearchResults();
   };
 
   useEffect(() => {
-    const handleKeyDown = (event: any) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setShowRecentSearches(false);
       }
