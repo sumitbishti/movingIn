@@ -36,7 +36,7 @@ export default function Hero() {
 const ImageCard = ({ item }: any) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHeartClicked, setIsHeartClicked] = useState(false);
-  const dotsRef = useRef<any>(null);
+  const dotsRef = useRef<HTMLDivElement>(null);
   const VISIBLE_DOTS_LENGTH = 5;
 
   const handleHeartClicked = () => {
@@ -64,11 +64,16 @@ const ImageCard = ({ item }: any) => {
       offset,
       item.images.length - VISIBLE_DOTS_LENGTH
     );
-    dotsRef.current.style.transform = `translateX(${-maxOffset * 12}px)`;
+
+    if (dotsRef.current) {
+      dotsRef.current.style.transform = `translateX(${-maxOffset * 12}px)`;
+    }
   };
 
   const updateDotsSize = () => {
-    Array.from(dotsRef.current.children).forEach((dot: any, index: any) => {
+    Array.from(dotsRef.current?.children || []).forEach((dot, index) => {
+      if (!(dot instanceof HTMLDivElement)) return;
+
       const distance = Math.abs(currentIndex - index);
       const halfDistance = Math.floor(VISIBLE_DOTS_LENGTH / 2);
       dot.style.scale = "1";
@@ -101,7 +106,7 @@ const ImageCard = ({ item }: any) => {
   useEffect(() => {
     updateDotsContainerPosition();
     updateDotsSize();
-  }, [currentIndex]);
+  }, [currentIndex, updateDotsContainerPosition, updateDotsSize]);
 
   return (
     <Card className="relative border-0 flex flex-col gap-3 mb-4 group">
@@ -110,7 +115,7 @@ const ImageCard = ({ item }: any) => {
           className="flex w-full transform transition-transform duration-500 h-60"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          {item.images.map((src: any, index: number) => (
+          {item.images.map((src: string, index: number) => (
             <Image
               src={src}
               key={index}
