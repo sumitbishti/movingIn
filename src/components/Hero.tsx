@@ -15,7 +15,7 @@ import { Heart, ChevronRight, ChevronLeft } from "lucide-react";
 
 // optimize image loading
 // add list virtualization/windowing
-// add loading animation/pagination
+// add smooth loading of content (animation/pagination)
 // add infinite scrolling
 // add skeleton rendering
 // fetch the card data from real api
