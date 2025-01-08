@@ -16,22 +16,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script
-          dangerouslySetInnerHTML={{
-            __html: `
-            (function() {
-              try {
-                const storedTheme = localStorage.getItem('theme');
-                const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-                const theme = storedTheme || systemTheme;
-                if (theme) {
-                  document.documentElement.classList.add(theme);
-                }
-              } catch (e) {
-                console.error('Failed to apply theme', e);
-              }
-            })();
-          `,
-          }}
         />
       </head>
       <body>
