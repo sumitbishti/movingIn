@@ -12,9 +12,14 @@ const SearchBar = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [showRecentSearches, setShowRecentSearches] = useState(false);
 
-  let recentSearches =
-    JSON.parse(localStorage.getItem("recentSearches") || "[]") || [];
-  recentSearches = recentSearches.slice(0, Math.min(10, recentSearches.length));
+  let recentSearches = [];
+  if (typeof window !== "undefined") {
+    recentSearches = JSON.parse(localStorage.getItem("recentSearches") || "[]");
+    recentSearches = recentSearches.slice(
+      0,
+      Math.min(10, recentSearches.length)
+    );
+  }
 
   // fetch search result based on the search term
   // set up a temp server that returns the required data
@@ -39,10 +44,12 @@ const SearchBar = () => {
 
     const prevSearches = [...recentSearches];
     prevSearches.unshift(searchTerm);
-    localStorage.setItem(
-      "recentSearches",
-      JSON.stringify(prevSearches.slice(0, 10))
-    );
+    if (typeof window !== "undefined") {
+      localStorage.setItem(
+        "recentSearches",
+        JSON.stringify(prevSearches.slice(0, 10))
+      );
+    }
   };
 
   // debouncing the fetch
