@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "../components/theme-provider";
 
 export const metadata: Metadata = {
-  title: "Your App Name",
-  description: "Your app description",
+  title: "moveIn",
+  description: "Move in easily",
 };
 
 export default function RootLayout({
