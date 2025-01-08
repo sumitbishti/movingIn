@@ -15,8 +15,8 @@ type ThemeProviderState = {
   setTheme: (theme: Theme) => void;
 };
 
-const THEME_STORAGE_KEY = 'theme';
-const DEFAULT_THEME: Theme = 'system';
+const THEME_STORAGE_KEY = "theme";
+const DEFAULT_THEME: Theme = "system";
 
 const initialState: ThemeProviderState = {
   theme: "system",
@@ -34,9 +34,13 @@ export function ThemeProvider({
   const [theme, setTheme] = useState<Theme>(DEFAULT_THEME);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
     const validatedTheme =
-      storedTheme === "dark" || storedTheme === "light" || storedTheme === "system"
+      storedTheme === "dark" ||
+      storedTheme === "light" ||
+      storedTheme === "system"
         ? storedTheme
         : DEFAULT_THEME;
 
@@ -44,6 +48,8 @@ export function ThemeProvider({
   }, []);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const root = window.document.documentElement;
 
     root.removeAttribute(attribute);
@@ -57,14 +63,15 @@ export function ThemeProvider({
     } else {
       root.setAttribute(attribute, theme);
     }
-
   }, [theme, attribute, enableSystem]);
 
   const value = {
     theme,
     setTheme: (theme: Theme) => {
-      localStorage.setItem(THEME_STORAGE_KEY, theme);
-      setTheme(theme);
+      if (typeof window !== "undefined") {
+        localStorage.setItem(THEME_STORAGE_KEY, theme);
+        setTheme(theme);
+      }
     },
   };
 
