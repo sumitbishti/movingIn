@@ -106,6 +106,7 @@ export default function ImageCard(props: ImageCardProps) {
               width={500}
               height={500}
               alt={title}
+              loading="lazy"
               className="select-none object-cover"
             />
           ))}
@@ -136,7 +137,7 @@ export default function ImageCard(props: ImageCardProps) {
             className="bg-black-0 flex justify-center items-center gap-[4px] px-[2px] py-1 transition-transform duration-500"
             ref={dotsRef}
           >
-            {images.map((_: string, index: number) => {
+            {images.map((_, index) => {
               return (
                 <div
                   key={index}

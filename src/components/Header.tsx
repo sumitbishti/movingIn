@@ -15,7 +15,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-background p-4 fixed top-0 flex w-full z-50">
+    <header className="bg-background p-4 fixed top-0 flex flex-col w-full z-50">
       <div className="container mx-auto flex justify-between items-center gap-4">
         {/* Logo */}
         <Link href="/" className="text-2xl font-bold text-primary">
@@ -26,24 +26,22 @@ export default function Header() {
         <SearchBar />
 
         {/* Right-side actions */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 hidden md:flex">
           {/* Theme Toggle (Hidden on small screens) */}
-          <div className="hidden md:block">
-            <ThemeToggle />
-          </div>
+          <ThemeToggle />
 
           {/* Sign Up Button (Always visible) */}
           <Button>Sign Up</Button>
-
-          {/* Mobile Menu Toggle */}
-          <button
-            className="md:hidden"
-            onClick={toggleMenu}
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
         </div>
+
+        {/* Mobile Menu Toggle */}
+        <button
+          className="md:hidden"
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+        >
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
 
       {/* Mobile Dropdown Menu */}
@@ -55,11 +53,12 @@ export default function Header() {
               { href: "/about", label: "About" },
               { href: "/products", label: "Products" },
               { href: "/contact", label: "Contact" },
-            ].map(({ href, label }) => {
+              { href: "/", label: "Sign up" },
+            ].map(({ href, label }, index) => {
               return (
                 <li
-                  key={href}
-                  className="block w-full text-center h-12 flex justify-center items-center"
+                  key={`${index}-${href}`}
+                  className="w-full text-center py-1 flex justify-center items-center hover:bg-secondary"
                 >
                   <Link
                     href={href}

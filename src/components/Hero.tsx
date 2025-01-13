@@ -1,5 +1,3 @@
-"use client";
-
 import { data } from "@/data/hero_data";
 import ImageCard from "./ImageCard";
 
