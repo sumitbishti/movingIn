@@ -47,7 +47,7 @@ export default function Header() {
       {/* Mobile Dropdown Menu */}
       {isMenuOpen && (
         <div className="bg-background md:hidden">
-          <ul className="flex flex-col justify-center items-center space-y-0 pt-4 pb-2">
+          <ul className="flex flex-col justify-center items-center space-y-0 pt-4">
             {[
               { href: "/", label: "Home" },
               { href: "/about", label: "About" },
@@ -58,12 +58,12 @@ export default function Header() {
               return (
                 <li
                   key={`${index}-${href}`}
-                  className="w-full text-center py-1 flex justify-center items-center hover:bg-secondary"
+                  className="w-full text-center py-2 flex justify-center items-center hover:bg-secondary rounded-xl"
                 >
                   <Link
                     href={href}
                     onClick={() => setIsMenuOpen(false)}
-                    className="block w-full py-1 rounded-md 
+                    className="w-full rounded-md 
                     text-foreground active:bg-accent/80
                     hover:bg-accent hover:text-accent-foreground 
                     transition-colors duration-200 h-full flex justify-center items-center"
@@ -73,7 +73,7 @@ export default function Header() {
                 </li>
               );
             })}
-            <li className="block w-full text-center block w-full">
+            <li className="block w-full text-center hover:bg-secondary rounded-xl">
               <ThemeToggle />
             </li>
           </ul>
