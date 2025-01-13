@@ -1,9 +1,8 @@
 "use client";
 
-import { Search, X, Filter } from "lucide-react";
-import { useCallback, useEffect, useRef, useState, forwardRef } from "react";
+import { Search, X } from "lucide-react";
+import { useCallback, useEffect, useState, forwardRef } from "react";
 import RecentSearchResults from "./RecentSearchResults";
-import { Button } from "./ui/button";
 
 export type RecentSearchItem = string;
 
@@ -139,5 +138,6 @@ const SearchBar = forwardRef<HTMLInputElement>(({}, ref) => {
     </div>
   );
 });
+SearchBar.displayName = "SearchBar";
 
 export default SearchBar;
