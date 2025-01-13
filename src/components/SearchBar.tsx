@@ -1,15 +1,16 @@
 "use client";
 
 import { Search, X, Filter } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, forwardRef } from "react";
 import RecentSearchResults from "./RecentSearchResults";
+import { Button } from "./ui/button";
 
 export type RecentSearchItem = string;
 
-const SearchBar = () => {
+const SearchBar = forwardRef<HTMLInputElement>(({}, ref) => {
   const [searchTerm, setSearchTerm] = useState("");
   // const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-  const inputRef = useRef<HTMLInputElement>(null);
+
   const [showRecentSearches, setShowRecentSearches] = useState(false);
 
   let recentSearches = [];
@@ -73,7 +74,8 @@ const SearchBar = () => {
 
     if (searchTerm?.trim() === "") return;
     saveSearchTermOnBrowser(searchTerm);
-    inputRef.current?.blur();
+
+    if (ref && "current" in ref) ref.current?.blur();
   };
 
   const onRecentSearchItemClick = (item: RecentSearchItem) => {
@@ -96,8 +98,8 @@ const SearchBar = () => {
   }, []);
 
   return (
-    <div className="relative border-0 border-accent w-[600px] h-[50px] rounded-full flex items-center bg-secondary">
-      <Search className="cursor-pointer h-[25px] w-[25px] m-4 flex-shrink-0" />
+    <div className="relative rounded-full flex items-center bg-secondary shrink">
+      <Search className="cursor-pointer h-[20px] w-[20px] m-4 shrink-0" />
 
       {/* shows recent searches */}
       {showRecentSearches && recentSearches.length > 0 && (
@@ -110,7 +112,7 @@ const SearchBar = () => {
       <form className="w-full" onSubmit={handleSearchSubmit}>
         <input
           type="text"
-          ref={inputRef}
+          ref={ref}
           value={searchTerm}
           onFocus={() => setShowRecentSearches(!searchTerm)}
           onBlur={() =>
@@ -133,9 +135,9 @@ const SearchBar = () => {
         </div>
       )}
 
-      <Filter className="cursor-pointer h-[25px] w-[25px] m-4 flex-shrink-0" />
+      {/* <Filter className="cursor-pointer h-[20px] w-[20px] m-4 flex-shrink-0" /> */}
     </div>
   );
-};
+});
 
 export default SearchBar;

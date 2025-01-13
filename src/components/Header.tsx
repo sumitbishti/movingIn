@@ -1,49 +1,74 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Menu, X } from "lucide-react";
+import { Menu, Search, X, ArrowLeft } from "lucide-react";
 import SearchBar from "@/components/SearchBar";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const toggleSearchBar = () => {
+    setIsSearchBarOpen(!isSearchBarOpen);
+  };
+
+  useEffect(() => {
+    if (isSearchBarOpen) {
+      inputRef.current?.focus();
+    }
+  }, [isSearchBarOpen]);
+
   return (
-    <header className="bg-background p-4 fixed top-0 flex flex-col w-full z-50">
-      <div className="container mx-auto flex justify-between items-center gap-4">
-        {/* Logo */}
-        <Link href="/" className="text-2xl font-bold text-primary">
-          moveIn
-        </Link>
+    <header className="bg-background p-4 fixed top-0 flex flex-col w-full z-50 items-center">
+      {!isSearchBarOpen ? (
+        <div className="container mx-auto flex justify-between items-center gap-4">
+          {/* Logo */}
+          <Link href="/" className="text-2xl font-bold text-primary">
+            moveIn
+          </Link>
 
-        {/* Search */}
-        <SearchBar />
+          {/* Search */}
+          <div className="w-[600px] h-[50px] hidden md:block">
+            <SearchBar ref={inputRef} />
+          </div>
 
-        {/* Right-side actions */}
-        <div className="flex items-center gap-4 hidden md:flex">
-          {/* Theme Toggle (Hidden on small screens) */}
-          <ThemeToggle />
+          {/* Right-side actions */}
+          <div className="flex items-center gap-4 hidden md:flex">
+            {/* Theme Toggle (Hidden on small screens) */}
+            <ThemeToggle />
 
-          {/* Sign Up Button (Always visible) */}
-          <Button>Sign Up</Button>
+            {/* Sign Up Button (Always visible) */}
+            <Button>Sign Up</Button>
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <div className="flex md:hidden gap-4 items-center">
+            <Search
+              className="cursor-pointer h-[20px] w-[20px]"
+              onClick={toggleSearchBar}
+            />
+
+            <button onClick={toggleMenu} aria-label="Toggle menu">
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
-
-        {/* Mobile Menu Toggle */}
-        <button
-          className="md:hidden"
-          onClick={toggleMenu}
-          aria-label="Toggle menu"
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
+      ) : (
+        <div className="flex w-full justify-between items-center gap-2 px-1">
+          <ArrowLeft onClick={() => toggleSearchBar()} />
+          <div className="w-full h-[50px]">
+            <SearchBar ref={inputRef} />
+          </div>
+        </div>
+      )}
       {/* Mobile Dropdown Menu */}
       {isMenuOpen && (
         <div className="bg-background md:hidden">
