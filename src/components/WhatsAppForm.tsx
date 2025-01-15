@@ -10,27 +10,27 @@ export default function WhatsAppForm() {
     e.preventDefault()
     setError('')
 
-    // Basic phone number validation
+    // Enhanced phone number validation
     if (!phoneNumber.match(/^\+?[1-9]\d{1,14}$/)) {
       setError('Please enter a valid phone number with country code')
       return
     }
 
-    // The URL to be shared (your deployed website URL)
-    const websiteUrl = 'https://movein-neon.vercel.app/about?refresh=1'
+    // Use the base URL without query parameters
+    const websiteUrl = 'https://movein-neon.vercel.app/about'
     
-    // Create the message with the website URL
-    const message = `Check out this amazing offer! ${websiteUrl}`
+    // Create a more engaging message
+    const message = `🎉 Exclusive Special Offer!\n\nCheck out this amazing deal! Click here to learn more:\n${websiteUrl}`
     
-    // Create WhatsApp sharing URL
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`
+    // Create WhatsApp sharing URL - use api.whatsapp.com instead of web.whatsapp.com
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber.replace(/\D/g, '')}&text=${encodeURIComponent(message)}`
     
-    // Open WhatsApp
-    window.open(whatsappUrl, '_blank')
+    // Open WhatsApp in a new tab
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 space-y-4">
       <div>
         <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 mb-1">
           WhatsApp Number (with country code)
