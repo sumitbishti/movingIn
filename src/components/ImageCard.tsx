@@ -35,11 +35,9 @@ export default function ImageCard(props: ImageCardProps) {
 
   const handleNextClick = () => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
-    console.log(currentIndex);
   };
   const handlePrevClick = () => {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-    console.log(currentIndex);
   };
 
   useEffect(() => {
@@ -72,15 +70,12 @@ export default function ImageCard(props: ImageCardProps) {
         } else if (currentIndex >= images.length - (halfDistance + 1)) {
           if (index === images.length - (VISIBLE_DOTS_LENGTH - 1)) {
             dot.style.scale = "0.9";
-            console.log("0.9", index);
           } else if (index === images.length - VISIBLE_DOTS_LENGTH) {
             dot.style.scale = "0.8";
-            console.log("0.8", index);
           }
         } else {
           if (distance == 1) {
             dot.style.scale = "0.95";
-            console.log("0.95", index);
           } else if (distance == 2) {
             dot.style.scale = "0.8";
           }
@@ -94,21 +89,21 @@ export default function ImageCard(props: ImageCardProps) {
 
   return (
     <Card className="relative border-0 flex flex-col gap-3 mb-4 group">
-      <CardHeader className="overflow-hidden rounded-xl">
+      <CardHeader className="relative overflow-hidden rounded-xl">
         <div
-          className="flex w-full transform transition-transform duration-500 h-60"
+          className="relative flex transform transition-transform duration-500 w-full h-full aspect-1"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          {images.map((src: string, index: number) => (
-            <Image
-              src={src}
-              key={index}
-              width={500}
-              height={500}
-              alt={title}
-              loading="lazy"
-              className="select-none object-cover"
-            />
+          {images.map((src, index) => (
+            <div key={index} className="flex-shrink-0 w-full h-full relative">
+              <Image
+                src={src}
+                alt={title}
+                fill={true}
+                loading="lazy"
+                className="select-none object-cover"
+              />
+            </div>
           ))}
         </div>
 
@@ -118,23 +113,23 @@ export default function ImageCard(props: ImageCardProps) {
           }`}
           onClick={handleHeartClicked}
         />
-        <ChevronLeft
-          onClick={handlePrevClick}
-          className={`absolute opacity-0 group-hover:opacity-100 transition-opacity p-1 left-3 top-1/3 bg-background rounded-full transform hover:scale-110 ${
-            currentIndex <= 0 && "hidden"
-          }`}
-        />
-        <ChevronRight
-          onClick={handleNextClick}
-          className={`absolute opacity-0 group-hover:opacity-100 transition-opacity p-1 right-3 top-1/3 bg-background rounded-full transform hover:scale-110 ${
-            currentIndex === images.length - 1 && "hidden"
-          }`}
-        />
+        {currentIndex > 0 && (
+          <ChevronLeft
+            onClick={handlePrevClick}
+            className={`absolute opacity-0 group-hover:opacity-100 transition-opacity p-1 left-3 top-1/2 transform -translate-y-1/2 bg-background rounded-full transform hover:scale-110 cursor-pointer`}
+          />
+        )}
+        {currentIndex < images.length - 1 && (
+          <ChevronRight
+            onClick={handleNextClick}
+            className={`absolute opacity-0 group-hover:opacity-100 transition-opacity p-1 right-3 top-1/2 transform -translate-y-1/2 bg-background rounded-full transform hover:scale-110 cursor-pointer`}
+          />
+        )}
 
         {/* dots */}
-        <div className="absolute top-[200px] left-1/3 bg-red-00 w-[60px] h-8 flex items-center overflow-hidden">
+        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[60px] h-8 flex items-center overflow-hidden">
           <div
-            className="bg-black-0 flex justify-center items-center gap-[4px] px-[2px] py-1 transition-transform duration-500"
+            className="flex justify-center items-center gap-[4px] px-[2px] py-1 transition-transform duration-500"
             ref={dotsRef}
           >
             {images.map((_, index) => {
@@ -150,10 +145,12 @@ export default function ImageCard(props: ImageCardProps) {
           </div>
         </div>
       </CardHeader>
+
       <CardContent>
         <CardTitle>{title}</CardTitle>
         <CardDescription className="line-clamp-2">{desp}</CardDescription>
       </CardContent>
+
       <CardFooter className="mt-auto flex justify-between">
         <div className="flex flex-col">
           <span className="text-sm font-semibold">{location}</span>

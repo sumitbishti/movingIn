@@ -12,7 +12,7 @@ import ImageCard from "./ImageCard";
 export default function Hero() {
   return (
     <section className="bg-background text-foreground py-12 px-6 mt-20">
-      <div className="grid gap-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {data.map((item, index) => (
           <ImageCard key={index} {...item} />
         ))}

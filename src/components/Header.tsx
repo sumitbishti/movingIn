@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "./ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Menu, Search, X, ArrowLeft } from "lucide-react";
 import SearchBar from "@/components/SearchBar";
