@@ -1,6 +1,3 @@
-// import RedditDiscussions from "@/components/RedditDiscussions";
-// import { data } from "@/data/blind_discussions";
-
 import { Metadata } from "next";
 import WhatsAppForm from "@/components/WhatsAppForm";
 
