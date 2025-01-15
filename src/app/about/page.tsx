@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     description: "Check out our amazing product with great discounts",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1682687220866-c856f566f1bd", // Replace with your image URL
+        url: "https://movein-neon.vercel.app/images/pexels-1.jpg", // Replace with your image URL
         width: 1200,
         height: 630,
         alt: "Special offer preview",
