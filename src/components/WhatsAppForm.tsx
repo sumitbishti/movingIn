@@ -17,7 +17,7 @@ export default function WhatsAppForm() {
     }
 
     // The URL to be shared (your deployed website URL)
-    const websiteUrl = 'https://www.linkedin.com/in/sumit-bisht-711aa7214'
+    const websiteUrl = 'https://movein-neon.vercel.app/about'
     
     // Create the message with the website URL
     const message = `Check out this amazing offer! ${websiteUrl}`
