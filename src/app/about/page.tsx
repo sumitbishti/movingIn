@@ -18,6 +18,8 @@ export const metadata: Metadata = {
         alt: "Special offer preview",
       },
     ],
+    siteName: "Move In",
+    type: "website",
   },
 };
 
