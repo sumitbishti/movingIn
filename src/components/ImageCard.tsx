@@ -30,6 +30,7 @@ export default function ImageCard(props: ImageCardProps) {
   const dotsRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
   const [startX, setStartX] = useState(0);
+  const [startTime, setStartTime] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [translateX, setTranslateX] = useState(0);
   const [imageWidth, setImageWidth] = useState(0);
@@ -97,6 +98,7 @@ export default function ImageCard(props: ImageCardProps) {
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     setStartX(e.touches[0].clientX);
     setIsDragging(true);
+    setStartTime(Date.now());
   };
 
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
@@ -117,8 +119,21 @@ export default function ImageCard(props: ImageCardProps) {
   };
   const handleTouchEnd = () => {
     setIsDragging(false);
+    const endTime = Date.now();
+    const timeElapsed = endTime - startTime;
 
-    if (Math.abs(translateX) >= imageWidth / 2) {
+    // pixels per second
+    const velocity = Math.abs(translateX) / timeElapsed;
+
+    const quickSwipeThreshold = imageWidth * 0.001; // 15% of the image swiped
+    const normalSwipeThreshold = imageWidth * 0.5; // 50% of the image swiped
+    const isQuickSwipe = velocity > 0.01;
+
+    const shouldSwipe = isQuickSwipe
+      ? Math.abs(translateX) > quickSwipeThreshold
+      : Math.abs(translateX) > normalSwipeThreshold;
+
+    if (shouldSwipe) {
       if (translateX > 0 && currentIndex > 0) {
         setCurrentIndex((prev) => prev - 1);
       } else if (translateX < 0 && currentIndex < images.length - 1) {
@@ -147,7 +162,7 @@ export default function ImageCard(props: ImageCardProps) {
     <Card className="relative border-0 flex flex-col gap-3 mb-4 group">
       <CardHeader className="relative overflow-hidden rounded-xl">
         <div
-          className="relative flex transform transition-transform duration-500 w-full h-full aspect-1"
+          className="relative flex transform transition-transform duration-300 w-full h-full aspect-1"
           style={{
             transform: `translateX(calc(-${
               currentIndex * 100
