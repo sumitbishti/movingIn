@@ -24,10 +24,15 @@ type ImageCardProps = {
 export default function ImageCard(props: ImageCardProps) {
   const { images, title, desp, date, price, location } = props;
 
+  const VISIBLE_DOTS_LENGTH = 5;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHeartClicked, setIsHeartClicked] = useState(false);
   const dotsRef = useRef<HTMLDivElement>(null);
-  const VISIBLE_DOTS_LENGTH = 5;
+  const imageRef = useRef<HTMLDivElement | null>(null);
+  const [startX, setStartX] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [translateX, setTranslateX] = useState(0);
+  const [imageWidth, setImageWidth] = useState(0);
 
   const handleHeartClicked = () => {
     setIsHeartClicked(!isHeartClicked);
@@ -35,9 +40,11 @@ export default function ImageCard(props: ImageCardProps) {
 
   const handleNextClick = () => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
+    setTranslateX(0);
   };
   const handlePrevClick = () => {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    setTranslateX(0);
   };
 
   useEffect(() => {
@@ -87,21 +94,84 @@ export default function ImageCard(props: ImageCardProps) {
     updateDotsSize();
   }, [currentIndex, images]);
 
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setStartX(e.touches[0].clientX);
+    setIsDragging(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+
+    const currentX = e.touches[0].clientX;
+    const diff = currentX - startX;
+
+    // Add resistance at the edges
+    if (
+      (currentIndex === 0 && diff > 0) ||
+      (currentIndex === images.length - 1 && diff < 0)
+    ) {
+      setTranslateX(diff * 0.3); // Reduced movement at edges
+    } else {
+      setTranslateX(diff);
+    }
+  };
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+
+    if (Math.abs(translateX) >= imageWidth / 2) {
+      if (translateX > 0 && currentIndex > 0) {
+        setCurrentIndex((prev) => prev - 1);
+      } else if (translateX < 0 && currentIndex < images.length - 1) {
+        setCurrentIndex((prev) => prev + 1);
+      }
+    }
+    setTranslateX(0);
+  };
+
+  useEffect(() => {
+    if (imageRef.current) {
+      setImageWidth(imageRef.current.offsetWidth);
+    }
+
+    const handleResize = () => {
+      if (imageRef.current) {
+        setImageWidth(imageRef.current.offsetWidth);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <Card className="relative border-0 flex flex-col gap-3 mb-4 group">
       <CardHeader className="relative overflow-hidden rounded-xl">
         <div
           className="relative flex transform transition-transform duration-500 w-full h-full aspect-1"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          style={{
+            transform: `translateX(calc(-${
+              currentIndex * 100
+            }% + ${translateX}px))`,
+            transition: isDragging ? "none" : "transform 0.3s ease-out",
+          }}
         >
           {images.map((src, index) => (
-            <div key={index} className="flex-shrink-0 w-full h-full relative">
+            <div
+              key={index}
+              className="flex-shrink-0 w-full h-full relative touch-pan-y"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              ref={currentIndex === 0 ? imageRef : null}
+            >
               <Image
                 src={src}
                 alt={title}
                 fill={true}
                 loading="lazy"
-                className="select-none object-cover"
+                draggable={false}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="select-none object-cover pointer-events-none"
               />
             </div>
           ))}
