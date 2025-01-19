@@ -18,7 +18,7 @@ type ImageCardProps = {
   desp: string;
   date: string;
   price: number;
-  location: string;
+  location: string
 };
 
 export default function ImageCard(props: ImageCardProps) {
