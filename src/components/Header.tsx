@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Menu, Search, X, ArrowLeft } from "lucide-react";
+import { Menu, Search, X, ArrowLeft, Github } from "lucide-react";
 import SearchBar from "@/components/SearchBar";
 
 export default function Header() {
@@ -41,7 +41,16 @@ export default function Header() {
           </div>
 
           {/* Right-side actions */}
-          <div className="flex items-center gap-4 hidden md:flex">
+          <div className="flex items-center gap-2 hidden md:flex">
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://github.com/sumitbishti/moveIn"
+              className="hover:bg-accent p-2 rounded-full"
+            >
+              <Github className="h-[20px] w-[20px]" />
+            </Link>
+
             {/* Theme Toggle (Hidden on small screens) */}
             <ThemeToggle />
 
@@ -51,6 +60,13 @@ export default function Header() {
 
           {/* Mobile Menu Toggle */}
           <div className="flex md:hidden gap-4 items-center">
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://github.com/sumitbishti/moveIn"
+            >
+              <Github className="h-[20px] w-[20px] hover:bg-accent hover:text-accent-foreground" />
+            </Link>
             <Search
               className="cursor-pointer h-[20px] w-[20px]"
               onClick={toggleSearchBar}
