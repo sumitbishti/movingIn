@@ -2,7 +2,8 @@ export default async function dbConnect() {
   // Ensures this function only runs on the server
   if (process.env.NEXT_RUNTIME === "nodejs") {
     const mongoose = await import("mongoose");
-    require("dotenv").config();
+    const dotenv = await import("dotenv");
+    dotenv.config();
 
     const MONGODB_URI =
       process.env.MONGODB_URI || "mongodb://localhost:27017/moveIn";
@@ -19,7 +20,7 @@ export default async function dbConnect() {
     const globalWithMongoose = global as NodeJS.Global & {
       mongoose?: CachedMongoose;
     };
-    let cached: CachedMongoose = globalWithMongoose.mongoose || {
+    const cached: CachedMongoose = globalWithMongoose.mongoose || {
       conn: null,
       promise: null,
     };
