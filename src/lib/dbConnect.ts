@@ -8,7 +8,7 @@ export default async function dbConnect() {
     const MONGODB_URI =
       process.env.MONGODB_URI || "mongodb://localhost:27017/moveIn";
     if (!MONGODB_URI) {
-      throw new Error("MONGODB_URI is not defined in .env.local");
+      throw new Error("MONGODB_URI is not defined in .env file");
     }
 
     interface CachedMongoose {
