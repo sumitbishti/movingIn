@@ -126,10 +126,10 @@ const SearchBar = forwardRef<HTMLInputElement>(({}, ref) => {
       </form>
 
       {searchTerm !== "" && (
-        <div className="p-1 rounded-full hover:bg-accent">
+        <div className="p-3 rounded-full hover:bg-accent">
           <X
             onClick={() => setSearchTerm("")}
-            className="cursor-pointer h-[25px] w-[25px]"
+            className="cursor-pointer h-[25px] w-[25px] hover:bg-background rounded-full p-1"
           />
         </div>
       )}
