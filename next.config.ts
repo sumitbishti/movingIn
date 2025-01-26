@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   images: {
     domains: ["images.pexels.com", "images.unsplash.com", "www.w3schools.com"],
   },
+  // experimental: {
+  //   instrumentationHook: true,
+  // } as any,
 };
 
 export default nextConfig;
