@@ -50,6 +50,50 @@ export default function ImageCard(props: ImageCardProps) {
     setTranslateX(0);
   };
 
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setStartX(e.touches[0].clientX);
+    setIsDragging(true);
+    setStartTime(Date.now());
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+
+    const currentX = e.touches[0].clientX;
+    const diff = currentX - startX;
+
+    if (
+      (currentIndex === 0 && diff > 0) ||
+      (currentIndex === images.length - 1 && diff < 0)
+    ) {
+      setTranslateX(0); // No movement at edges
+    } else {
+      setTranslateX(diff);
+    }
+  };
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+
+    const endTime = Date.now();
+    const timeElapsed = endTime - startTime;
+
+    const normalSwipeThreshold = imageWidth * 0.5; // 50% of the image swiped
+    const isQuickSwipe = timeElapsed > 50 && timeElapsed < 250;
+    const isNormalSwipe = Math.abs(translateX) > normalSwipeThreshold;
+    // console.log(timeElapsed);
+
+    const shouldSwipe = isQuickSwipe || isNormalSwipe;
+
+    if (shouldSwipe) {
+      if (translateX > 0 && currentIndex > 0) {
+        setCurrentIndex((prev) => prev - 1);
+      } else if (translateX < 0 && currentIndex < images.length - 1) {
+        setCurrentIndex((prev) => prev + 1);
+      }
+    }
+    setTranslateX(0);
+  };
+
   useEffect(() => {
     const updateDotsContainerPosition = () => {
       const VISIBLE_DOTS_LENGTH = 5;
@@ -96,54 +140,6 @@ export default function ImageCard(props: ImageCardProps) {
     updateDotsContainerPosition();
     updateDotsSize();
   }, [currentIndex, images]);
-
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    setStartX(e.touches[0].clientX);
-    setIsDragging(true);
-    setStartTime(Date.now());
-  };
-
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (!isDragging) return;
-
-    const currentX = e.touches[0].clientX;
-    const diff = currentX - startX;
-
-    // Add resistance at the edges
-    if (
-      (currentIndex === 0 && diff > 0) ||
-      (currentIndex === images.length - 1 && diff < 0)
-    ) {
-      setTranslateX(diff * 0.3); // Reduced movement at edges
-    } else {
-      setTranslateX(diff);
-    }
-  };
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-    const endTime = Date.now();
-    const timeElapsed = endTime - startTime;
-
-    // pixels per second
-    const velocity = Math.abs(translateX) / timeElapsed;
-
-    const quickSwipeThreshold = imageWidth * 0.15; // 15% of the image swiped
-    const normalSwipeThreshold = imageWidth * 0.5; // 50% of the image swiped
-    const isQuickSwipe = velocity > 0.01;
-
-    const shouldSwipe = isQuickSwipe
-      ? Math.abs(translateX) > quickSwipeThreshold
-      : Math.abs(translateX) > normalSwipeThreshold;
-
-    if (shouldSwipe) {
-      if (translateX > 0 && currentIndex > 0) {
-        setCurrentIndex((prev) => prev - 1);
-      } else if (translateX < 0 && currentIndex < images.length - 1) {
-        setCurrentIndex((prev) => prev + 1);
-      }
-    }
-    setTranslateX(0);
-  };
 
   useEffect(() => {
     if (imageRef.current) {
