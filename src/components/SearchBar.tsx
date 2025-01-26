@@ -97,7 +97,7 @@ const SearchBar = forwardRef<HTMLInputElement>(({}, ref) => {
   }, []);
 
   return (
-    <div className="relative rounded-full flex items-center bg-secondary shrink">
+    <div className="relative rounded-full flex items-center bg-secondary shrink h-full">
       <Search className="cursor-pointer h-[20px] w-[20px] m-4 shrink-0" />
 
       {/* shows recent searches */}
@@ -121,12 +121,12 @@ const SearchBar = forwardRef<HTMLInputElement>(({}, ref) => {
           }
           onChange={handleSearchChange}
           placeholder="Search here..."
-          className="w-full h-full rounded-full p-3 outline-none bg-secondary"
+          className="w-full rounded-full p-1 outline-none bg-secondary placeholder:font-light placeholder:text-sm"
         />
       </form>
 
       {searchTerm !== "" && (
-        <div className="p-3 rounded-full hover:bg-accent">
+        <div className="px-2 rounded-full hover:bg-accent">
           <X
             onClick={() => setSearchTerm("")}
             className="cursor-pointer h-[25px] w-[25px] hover:bg-background rounded-full p-1"
