@@ -34,8 +34,8 @@ export default function ImageCard(props: ImageCardProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [translateX, setTranslateX] = useState(0);
   const [imageWidth, setImageWidth] = useState(0);
-  const wheelTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastWheelTime = useRef<number>(0);
+  // const wheelTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  // const lastWheelTime = useRef<number>(0);
 
   const handleHeartClicked = () => {
     setIsHeartClicked(!isHeartClicked);
@@ -160,84 +160,84 @@ export default function ImageCard(props: ImageCardProps) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleWheel = (e: WheelEvent) => {
-    // Skip if it's a vertical scroll
-    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) return;
-    e.preventDefault();
-    console.log("hande wheel");
+  // const handleWheel = (e: WheelEvent) => {
+  //   // Skip if it's a vertical scroll
+  //   if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) return;
+  //   e.preventDefault();
+  //   console.log("hande wheel");
 
-    const now = Date.now();
-    const isTrackpad = Math.abs(e.deltaX) < 50;
+  //   const now = Date.now();
+  //   const isTrackpad = Math.abs(e.deltaX) < 50;
 
-    if (isTrackpad) {
-      setTranslateX((prev) => {
-        const newTranslateX = prev - e.deltaX;
+  //   if (isTrackpad) {
+  //     setTranslateX((prev) => {
+  //       const newTranslateX = prev - e.deltaX;
 
-        // Add resistance at edges
-        if (currentIndex === 0 && newTranslateX > 0) {
-          return 0;
-        } else if (currentIndex === images.length - 1 && newTranslateX < 0) {
-          return 0;
-        }
+  //       // Add resistance at edges
+  //       if (currentIndex === 0 && newTranslateX > 0) {
+  //         return 0;
+  //       } else if (currentIndex === images.length - 1 && newTranslateX < 0) {
+  //         return 0;
+  //       }
 
-        // Limit maximum translation to prevent over-scrolling
-        const maxTranslate = imageWidth;
-        console.log(
-          Math.max(Math.min(newTranslateX, maxTranslate), -maxTranslate)
-        );
-        return Math.max(Math.min(newTranslateX, maxTranslate), -maxTranslate);
-      });
+  //       // Limit maximum translation to prevent over-scrolling
+  //       const maxTranslate = imageWidth;
+  //       console.log(
+  //         Math.max(Math.min(newTranslateX, maxTranslate), -maxTranslate)
+  //       );
+  //       return Math.max(Math.min(newTranslateX, maxTranslate), -maxTranslate);
+  //     });
 
-      if (wheelTimeoutRef.current) {
-        clearTimeout(wheelTimeoutRef.current);
-      }
+  //     if (wheelTimeoutRef.current) {
+  //       clearTimeout(wheelTimeoutRef.current);
+  //     }
 
-      wheelTimeoutRef.current = setTimeout(() => {
-        const threshold = imageWidth * 0.1; // 10% threshold for swipe
-        console.log("threshold: ", threshold);
+  //     wheelTimeoutRef.current = setTimeout(() => {
+  //       const threshold = imageWidth * 0.1; // 10% threshold for swipe
+  //       console.log("threshold: ", threshold);
 
-        if (Math.abs(translateX) > threshold) {
-          if (translateX > 0 && currentIndex > 0) {
-            setCurrentIndex((prev) => prev - 1);
-          } else if (translateX < 0 && currentIndex < images.length - 1) {
-            setCurrentIndex((prev) => prev + 1);
-          }
-        }
-        setTranslateX(0);
-      }, 50); // Increased timeout for smoother tracking
-    } else {
-      console.log("mouse wheel");
-      // For mouse wheel, use a more immediate response
-      if (now - lastWheelTime.current > 200) {
-        // Added cooldown to prevent rapid switching
-        if (e.deltaX > 0 && currentIndex < images.length - 1) {
-          setCurrentIndex((prev) => prev + 1);
-        } else if (e.deltaX < 0 && currentIndex > 0) {
-          setCurrentIndex((prev) => prev - 1);
-        }
-        lastWheelTime.current = now;
-      }
-    }
-  };
+  //       if (Math.abs(translateX) > threshold) {
+  //         if (translateX > 0 && currentIndex > 0) {
+  //           setCurrentIndex((prev) => prev - 1);
+  //         } else if (translateX < 0 && currentIndex < images.length - 1) {
+  //           setCurrentIndex((prev) => prev + 1);
+  //         }
+  //       }
+  //       setTranslateX(0);
+  //     }, 50); // Increased timeout for smoother tracking
+  //   } else {
+  //     console.log("mouse wheel");
+  //     // For mouse wheel, use a more immediate response
+  //     if (now - lastWheelTime.current > 200) {
+  //       // Added cooldown to prevent rapid switching
+  //       if (e.deltaX > 0 && currentIndex < images.length - 1) {
+  //         setCurrentIndex((prev) => prev + 1);
+  //       } else if (e.deltaX < 0 && currentIndex > 0) {
+  //         setCurrentIndex((prev) => prev - 1);
+  //       }
+  //       lastWheelTime.current = now;
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {
-    const currentImageRef = imageRef.current;
+  // useEffect(() => {
+  //   const currentImageRef = imageRef.current;
 
-    if (currentImageRef) {
-      currentImageRef.addEventListener("wheel", handleWheel, {
-        passive: false,
-      });
-    }
+  //   if (currentImageRef) {
+  //     currentImageRef.addEventListener("wheel", handleWheel, {
+  //       passive: false,
+  //     });
+  //   }
 
-    return () => {
-      if (currentImageRef) {
-        currentImageRef.removeEventListener("wheel", handleWheel);
-      }
-      if (wheelTimeoutRef.current) {
-        clearTimeout(wheelTimeoutRef.current);
-      }
-    };
-  }, [currentIndex, translateX, imageWidth, images.length]); // Added necessary dependencies
+  //   return () => {
+  //     if (currentImageRef) {
+  //       currentImageRef.removeEventListener("wheel", handleWheel);
+  //     }
+  //     if (wheelTimeoutRef.current) {
+  //       clearTimeout(wheelTimeoutRef.current);
+  //     }
+  //   };
+  // }, [currentIndex, translateX, imageWidth, images.length]); // Added necessary dependencies
 
   return (
     <Card className="relative border-0 flex flex-col gap-3 mb-4 group">
